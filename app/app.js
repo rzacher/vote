@@ -1,20 +1,20 @@
 'use strict';
 
 // Define the `phonecatApp` module
-var phonecatApp = angular.module('phonecatApp', []);
+var personApp = angular.module('personApp', []);
 
 // Define the `PhoneListController` controller on the `phonecatApp` module
-phonecatApp.controller('PhoneListController', function PhoneListController($scope) {
-  $scope.phones = [
+personApp.controller('PersonListController', function PersonListController($scope) {
+  $scope.persons = [
     {
-      name: 'Nexus S',
-      snippet: 'Fast just got faster with Nexus S.'
+      name: 'Bob',
+      value: '10'
     }, {
-      name: 'Motorola XOOM™ with Wi-Fi',
-      snippet: 'The Next, Next Generation tablet.'
+      name: 'Murry',
+      value: '8'
     }, {
-      name: 'MOTOROLA XOOM™',
-      snippet: 'The Next, Next Generation tablet.'
+      name: 'Scott',
+      value: '9'
     }
   ];
 });

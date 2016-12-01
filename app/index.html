@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app="phonecatApp">
+<html lang="en" ng-app="personApp">
   <head>
     <meta charset="utf-8">
     <title>Google Phone Gallery</title>
@@ -8,14 +8,18 @@
     <script src="bower_components/angular/angular.js"></script>
     <script src="app.js"></script>
   </head>
-  <body ng-controller="PhoneListController">
+  <body ng-controller="PersonListController">
 
     <ul>
-      <li ng-repeat="phone in phones">
-        <span>{{phone.name}}</span>
-        <p>{{phone.snippet}}</p>
+      <li ng-repeat="person in persons">
+        <span>{{person.name}}</span>
+        <p>{{person.value}}</p>
       </li>
     </ul>
+
+    <li ng-repeat="person in persons">
+        {{person.value}}
+     </li>
 
   </body>
 </html>
