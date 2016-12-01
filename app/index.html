@@ -14,12 +14,11 @@
       <li ng-repeat="person in persons">
         <span>{{person.name}}</span>
         <p>{{person.value}}</p>
+        <p>{{person.getTotal}} </p>
       </li>
     </ul>
 
-    <li ng-repeat="person in persons">
-        {{person.value}}
-     </li>
-
+  
+    Total: {{getTotal()}}
   </body>
 </html>

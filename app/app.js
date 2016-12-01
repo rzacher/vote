@@ -8,13 +8,27 @@ personApp.controller('PersonListController', function PersonListController($scop
   $scope.persons = [
     {
       name: 'Bob',
-      value: '10'
+      value: 10
     }, {
       name: 'Murry',
-      value: '8'
+      value: 8
     }, {
       name: 'Scott',
-      value: '9'
+      value: 9
+    }, {
+      name: 'Lester',
+      value: 11
     }
   ];
+
+
+  $scope.getTotal = function() {
+		var total = 0;
+		for(var i = 0; i < $scope.persons.length; i++) {
+		    total += $scope.persons[i].value;
+		}
+		var length = $scope.persons.length;
+        return total/length; 
+   }
+
 });
