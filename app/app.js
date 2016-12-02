@@ -2,9 +2,14 @@
 
 // Define the `phonecatApp` module
 var personApp = angular.module('personApp', []);
+var storage = require('node-persist'); 
+
+storage.initSync(); 
 
 // Define the `PhoneListController` controller on the `phonecatApp` module
 personApp.controller('PersonListController', function PersonListController($scope) {
+
+
   $scope.persons = [
     {
       name: 'Bob',
@@ -20,8 +25,12 @@ personApp.controller('PersonListController', function PersonListController($scop
       value: 11
     }
   ];
-
-
+ 
+  $scope.addUser = function() {
+    storage.setItemSync('persons', $scope.persons); 
+  }
+  
+ 
   $scope.getTotal = function() {
 		var total = 0;
 		for(var i = 0; i < $scope.persons.length; i++) {
