@@ -15,21 +15,32 @@ app.get('/', function (req, res) {
    res.send('persist app');
 })
 
-function createData(name, data) {
-  storage.setItemSync(name, data);
+function createData(name, value) {
+  var data = storage.getItemSync("data");
+  console.log(data);
+  if (data === undefined) {
+    data = []; 
+  }
+  var entry = {name: name, value: value}
+  console.log(entry);
+  data.push(entry); 
+  
+  storage.setItemSync("data", data);
 }
 
 function readData(name) {
-   var data = storage.getItemSync(name);
-   return data; 
+   var data = storage.getItemSync("data");
+   if (name === undefined) {
+      return data; 
+   } else {
+      return data; // Find the data for name here
+   }
 }
 
 function testData() {
-	data = {name: 'Bob', vote: 10};
-
 	console.log("Data in");
 	console.log(data);
-	createData(data);
+	createData('Bob', 10);
 	var data = readData();
 	console.log("Data out");
 	console.log(data);
@@ -47,7 +58,8 @@ app.get('/save_data', function (req, res) {
    };
    console.log(response);
    createData(name, value);
-   res.end(JSON.stringify(response));
+   var data = readData(name);
+   res.end(JSON.stringify(data));
 })
 
 app.get('/get_data', function (req, res) {
