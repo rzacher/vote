@@ -37,6 +37,12 @@ function readData(name) {
    }
 }
 
+
+function deleteData() {
+  // Set the data to an empty array
+  storage.setItemSync("data", []);
+}
+
 function testData() {
 	console.log("Data in");
 	console.log(data);
@@ -74,6 +80,15 @@ app.get('/get_data', function (req, res) {
    console.log(response);
    res.end(JSON.stringify(response));
 })
+
+app.delete('/delete_data', function (req, res) {
+  console.log("delete_data");
+  deleteData(); 
+  var response = "Data deleted";
+  res.end(response);
+})
+
+
 
 var server = app.listen(8081, function () {
    var host = server.address().address
