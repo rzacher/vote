@@ -7,10 +7,16 @@ component('vote', {
   templateUrl: 'vote/vote.template.html',
 
 // Define the `PhoneListController` controller on the `personApp` module
-controller: function VoteController() {
+controller: ['$routeParams', function VoteController($routeParams) {
+   var self = this; 
+   this.firstName = '1-test';
+   var foo = JSON.stringify($routeParams);
+   console.log("foo: " + foo);
+ 
+   console.log("name1: " + this.firstName);
    this.persons = [
     {
-      name: 'Bob',
+      name: this.firstName,
       value: 10
     }, {
       name: 'Murry',
@@ -32,7 +38,7 @@ controller: function VoteController() {
        var length = this.persons.length;
            return total/length; 
     }
-  } // end controller
+  }] // end controller
 });
  
   //$scope.addUser = function() {

@@ -11,8 +11,7 @@ angular.
         when('/vote', {
           template: '<vote></vote>'
         }).
-        when('/save_data', {
-          //console.log("in save_data"); 
+        when('/save_data/:name', {
           template: '<vote></vote>'
         }).
         otherwise('/voteform');

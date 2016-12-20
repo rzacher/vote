@@ -1,10 +1,10 @@
 
 <html>
    <body>
-      <form action = "http://127.0.0.1:8000/#!/save_data" method = "GET">
-         Name: <input type = "text" name = "name">  <br>
-         Value: <input type = "text" name = "value">
-         <input type = "submit" value = "Submit">
+      <form> 
+         Name: <input type = "text" ng-model = "$ctrl.name">  <br>
+         Value: <input type = "text" ng-model = "$ctrl.value">
+         <button ng-click="$ctrl.reset()">Submit</button>
       </form>
    </body>
 </html>
