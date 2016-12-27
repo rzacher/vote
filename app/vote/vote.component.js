@@ -33,7 +33,8 @@ controller: ['$routeParams', '$localStorage', '$http',  function VoteController(
         self.total = 0; 
         var i; 
         for (i=0; i < self.persons.length; i++) {
-          self.total += Number(self.persons[i].value); 
+          self.total += Number(self.persons[i].value);
+          self.average = self.total/self.persons.length; 
         }
        // self.persons = [{name: response.data[0].name, 
         //                  value: 10
