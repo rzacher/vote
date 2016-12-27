@@ -74,9 +74,11 @@ app.get('/get_data', function (req, res) {
 	console.log(data); 
    // Prepare output in JSON format
    response = {
-      name:name,
+      name:"get_data",
       data:data
    };
+   res.header("Access-Control-Allow-Origin", "*"); 
+
    console.log(response);
    res.end(JSON.stringify(response));
 })
@@ -88,7 +90,10 @@ app.delete('/delete_data', function (req, res) {
   res.end(response);
 })
 
-
+ // application -------------------------------------------------------------
+ //   app.get('*', function(req, res) {
+//        res.sendFile('app/index.html'); // load the single view file (angular will handle the page changes on the front-end)
+ //   });
 
 var server = app.listen(8081, function () {
    var host = server.address().address
