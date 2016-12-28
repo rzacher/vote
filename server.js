@@ -62,6 +62,7 @@ app.get('/save_data', function (req, res) {
       name:req.query.name,
       value:req.query.value
    };
+   res.header("Access-Control-Allow-Origin", "*");
    console.log(response);
    createData(name, value);
    var data = readData(name);
