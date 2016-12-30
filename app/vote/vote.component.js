@@ -34,7 +34,8 @@ controller: ['$routeParams', '$localStorage', '$http',  function VoteController(
         var i; 
         for (i=0; i < self.persons.length; i++) {
           self.total += Number(self.persons[i].value);
-          self.average = self.total/self.persons.length; 
+          // Take the average and trim to 1 place past decimal
+          self.average = (self.total/self.persons.length).toFixed(1); 
         }
        // self.persons = [{name: response.data[0].name, 
         //                  value: 10
@@ -76,15 +77,19 @@ controller: ['$routeParams', '$localStorage', '$http',  function VoteController(
   }
 **/
 
-
-   this.getTotal = function() {
-      var total = 0;
-       for (var i = 0; i < this.persons.length; i++) {
-           total += this.persons[i].value;
-       }
-       var length = this.persons.length;
-           return total/length; 
-    }
+   self.reset = function reset() {
+      console.log("reset called");
+      var url = "http://localhost:8081/delete_data";
+      $http.get(url).then(function(response) {
+              //console.log(response.data);
+              
+               self.average = 0;
+               self.persons = [];
+               $window.location.href = '/#!/vote';
+          });
+     
+      //self.average = 0;
+   }
   }] // end controller
 });
  

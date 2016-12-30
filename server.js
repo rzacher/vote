@@ -84,10 +84,11 @@ app.get('/get_data', function (req, res) {
    res.end(JSON.stringify(response));
 })
 
-app.delete('/delete_data', function (req, res) {
+app.get('/delete_data', function (req, res) {
   console.log("delete_data");
   deleteData(); 
   var response = "Data deleted";
+  res.header("Access-Control-Allow-Origin", "*"); 
   res.end(response);
 })
 
