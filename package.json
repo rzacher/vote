@@ -21,7 +21,6 @@
   },
   "scripts": {
     "prestart": "npm install",
-    "postinstall" : "./node_modules/bower/bin/bower install",
     "start": "http-server ./app",
     "pretest": "npm install",
     "test": "karma start karma.conf.js",
