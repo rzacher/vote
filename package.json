@@ -33,6 +33,10 @@
   },
   "dependencies": {
     "express": "^4.14.0",
-    "ngstorage": "^0.3.11"
+    "ngstorage": "^0.3.11",
+    "body-parser": "^1.13.3",
+    "underscore": "^1.8.3",
+    "angular-resource": "1.5.x",
+    "method-override": "^2.1.3"
   }
 }

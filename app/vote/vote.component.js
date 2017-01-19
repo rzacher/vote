@@ -20,14 +20,14 @@ controller: ['$routeParams', '$localStorage', '$http',  function VoteController(
    this.firstName = '1-test';
    
    var foo = JSON.stringify($routeParams);
-   console.log("foo: " + foo);
+   //console.log("foo: " + foo);
  
-   console.log("name1: " + this.firstName);
+   //console.log("name1: " + this.firstName);
 
    //this.createData(foo.name, 58);
 
    
-   $http.get('http://localhost:8081/get_data').then(function(response) {
+   $http.get('get_data').then(function(response) {
         console.log(JSON.stringify(response.data.data));
         self.persons = response.data.data; 
         self.total = 0; 
@@ -79,7 +79,7 @@ controller: ['$routeParams', '$localStorage', '$http',  function VoteController(
 
    self.reset = function reset() {
       console.log("reset called");
-      var url = "http://localhost:8081/delete_data";
+      var url = "delete_data";
       $http.get(url).then(function(response) {
               //console.log(response.data);
               

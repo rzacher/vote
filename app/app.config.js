@@ -11,9 +11,9 @@ angular.
         when('/vote', {
           template: '<vote></vote>'
         }).
-        when('/save_data/:name', {
-          template: '<vote></vote>'
-        }).
+        //when('/save_data/:name', {
+        //  template: '<vote></vote>'
+        //}).
         otherwise('/voteform');
     }
   ]);
