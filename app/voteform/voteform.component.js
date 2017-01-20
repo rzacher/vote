@@ -7,7 +7,7 @@ component('voteform', {
   controller: ['$routeParams', '$log', '$http', '$window',
      function voteformController($routeParams, $log, $http, $window) {
        	var self = this; 
-       	self.reset = function reset() {
+       	self.save = function reset() {
           $log.debug("client rest call on save_data");
           var url = 'save_data';
           $log.debug(url); 
@@ -57,8 +57,7 @@ component('voteform', {
                 alert( "failure message: " + JSON.stringify({data: data}));
            }); 
 
-       	$log.debug('reset');
-       	$log.debug("reset function called"); 
+       	$log.debug("save function called"); 
        	}; 
       }  
   ]
