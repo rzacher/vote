@@ -9,7 +9,7 @@ component('voteform', {
        	var self = this; 
        	self.reset = function reset() {
           $log.debug("client rest call on save_data");
-          var url = 'http://localhost:8081/save_data?name=' + self.name + '\&value='+self.value;
+          var url = 'save_data';
           $log.debug(url); 
           var dataObj = {
             name: self.name,
@@ -21,33 +21,41 @@ component('voteform', {
           postObject.name = self.name;
           postObject.value = self.value;
           $log.debug(postObject);
-        $http({
-          url: 'save_data',
-          dataType: 'json',
-          method: 'POST',
-          data: postObject,
-          headers: {
-              "Content-Type": "application/json"
-          }
-        }).success(function(response) {
-          $log.debug(response);
-          console.log(JSON.stringify(response.data.data));
-          $window.location.href = '/#!/vote';
-        }).error(function(error){
-            $log.debug(error);
-        });
+        // $http({
+        //   url: 'save_data',
+        //   dataType: 'json',
+        //   method: 'POST',
+        //   data: postObject,
+        //   headers: {
+        //       "Content-Type": "application/json"
+        //   }
+        // }).success(function(response) {
+        //   $log.debug(response);
+        //   console.log(JSON.stringify(response.data.data));
+        //   $window.location.href = '/#!/vote';
+        // }).error(function(error){
+        //     $log.debug(error);
+        // });
 
 
-          // var res = $http.get(url, JSON.stringify(dataObj)).then(function(response) {
-          //     console.log(JSON.stringify(response.data.data));
-          //     $window.location.href = '/#!/vote';
-          // });
-          // res.success(function(data, status, headers, config) {
-          //       $scope.message = data;
-          //     });
-          //     res.error(function(data, status, headers, config) {
-          //       alert( "failure message: " + JSON.stringify({data: data}));
-          //  }); 
+          var res = $http({
+            url: 'save_data',
+            dataType: 'json',
+            method: 'POST',
+            data: postObject,
+            headers: {
+                "Content-Type": "application/json"
+            }
+          }).then(function(response) {
+              console.log(JSON.stringify(response.data.data));
+              $window.location.href = '/#!/vote';
+          });
+          res.success(function(data, status, headers, config) {
+                $scope.message = data;
+              });
+          res.error(function(data, status, headers, config) {
+                alert( "failure message: " + JSON.stringify({data: data}));
+           }); 
 
        	$log.debug('reset');
        	$log.debug("reset function called"); 
