@@ -47,7 +47,7 @@ component('voteform', {
                 "Content-Type": "application/json"
             }
           }).then(function(response) {
-              console.log(JSON.stringify(response.data.data));
+              //console.log(JSON.stringify(response.data.data));
               $window.location.href = '/#!/vote';
           });
           res.success(function(data, status, headers, config) {

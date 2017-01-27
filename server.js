@@ -33,11 +33,20 @@ function createData(name, value) {
   if (data === undefined) {
     data = []; 
   }
-  var entry = {name: name, value: value}
+  var lastId = storage.getItemSync("lastId");
+  if (lastId === undefined) {
+    lastId = -1; 
+  }
+  lastId = lastId + 1;
+  console.log("lastId:" + lastId);
+  var id = lastId; 
+  console.log("id:" + id);
+  var entry = {id: id, name: name, value: value}
   console.log(entry);
   data.push(entry); 
   
   storage.setItemSync("data", data);
+  storage.setItemSync("lastId", id);
 }
 
 function readData(name) {
@@ -67,8 +76,8 @@ function testData() {
 
 app.post('/save_data', function (req, res) {
    // Prepare output in JSON format
-   console.log("req");
-   console.log(req);
+   //console.log("req");
+   //console.log(req);
    var body = req.body;
    console.log('in save_data');
    //console.log(JSON.stringify(body)); 

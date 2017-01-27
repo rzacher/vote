@@ -17,12 +17,16 @@
 	     <h2>Voting results</h2>
 	     <table class="table">
             <tr>
+               <td>id</td>
+			    <td> &nbsp;&nbsp;&nbsp;&nbsp;   </td>
 			   <td>Name</td>
 			    <td> &nbsp;&nbsp;&nbsp;&nbsp;   </td>
 			   <td>Value</td>
 		   </tr>
 
 		   <tr ng-repeat="person in $ctrl.persons">
+		       <td>{{person.id}}</td>
+			    <td> &nbsp;&nbsp;&nbsp;&nbsp;   </td>
 			   <td>{{person.name}}</td>
 			    <td> &nbsp;&nbsp;&nbsp;&nbsp;   </td>
 			   <td>{{person.value}}</td>
