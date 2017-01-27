@@ -14,6 +14,10 @@
 	<div class="container">
 	       <h2>Bob Zacher's voting app </h2>
 	        <a href="#!/voteform">Vote</a> &nbsp;&nbsp;&nbsp;<a href="#!/vote">See Votes</a></br></br>
+	        <div class="form-group">
+  				<label for="pwd">Admin Password:</label>
+  				<input type="password" class="form-control" id="pwd" ng-model = "$ctrl.password">
+			</div>
 	       <button ng-click="$ctrl.reset()">Reset survey</button>
 	       </br> <br>
 	     <h2>Voting results</h2>

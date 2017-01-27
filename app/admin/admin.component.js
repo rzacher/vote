@@ -16,8 +16,6 @@ controller: ['$routeParams', '$localStorage', '$http',  function AdminController
    var self = this; 
 
    //self.storage.initSync(); 
-
-   this.firstName = '1-test';
    
    var foo = JSON.stringify($routeParams);
    //console.log("foo: " + foo);
@@ -25,7 +23,11 @@ controller: ['$routeParams', '$localStorage', '$http',  function AdminController
    //console.log("name1: " + this.firstName);
 
    //this.createData(foo.name, 58);
+   //var dataObj = {
+   //         password: self.password
+   //       };
 
+   ///log.debug(self.password); 
    
    $http.get('get_data').then(function(response) {
         console.log(JSON.stringify(response.data.data));
@@ -79,9 +81,10 @@ controller: ['$routeParams', '$localStorage', '$http',  function AdminController
 
    self.reset = function reset() {
       console.log("reset called");
+      console.log(self.password);
       var url = "delete_data";
       $http.get(url).then(function(response) {
-              //console.log(response.data);
+               //log.debug(response.data);
               
                self.average = 0;
                self.persons = [];
