@@ -8,7 +8,7 @@ info:
   version: "0.0.1"
   title: voting app
 host:
-  http://35.167.112.139:3000
+  35.167.112.139:3000
 # Describe your paths here
 paths:
   # This is a path endpoint. Change it.
