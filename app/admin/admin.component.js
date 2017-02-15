@@ -29,9 +29,9 @@ controller: ['$routeParams', '$localStorage', '$http',  function AdminController
 
    ///log.debug(self.password); 
    
-   $http.get('get_data').then(function(response) {
+   $http.get('votes').then(function(response) {
         console.log(JSON.stringify(response.data.data));
-        self.persons = response.data.data; 
+        self.persons = response.data; 
         self.total = 0; 
         var i; 
         for (i=0; i < self.persons.length; i++) {
@@ -82,8 +82,8 @@ controller: ['$routeParams', '$localStorage', '$http',  function AdminController
    self.reset = function reset() {
       console.log("reset called");
       console.log(self.password);
-      var url = "delete_data";
-      $http.get(url).then(function(response) {
+      var url = "votes";
+      $http.delete(url).then(function(response) {
                //log.debug(response.data);
               
                self.average = 0;

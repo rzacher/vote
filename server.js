@@ -95,37 +95,66 @@ app.post('/save_data', function (req, res) {
    res.end(JSON.stringify(data));
 })
 
-app.get('/get_data', function (req, res) {
+app.get('/votes/:id', function (req, res) {
 	var name = req.query.name;
 	var data = readData(name);
+  var data_array = data
 	console.log(data); 
    // Prepare output in JSON format
-   response = {
-      name:"get_data",
-      data:data
-   };
+   response = data_array;
    res.header("Access-Control-Allow-Origin", "*"); 
+   //res.header("Access-Control-Allow-Origin: editor.swagger.io", "*");
+   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
-   console.log(response);
-   res.end(JSON.stringify(response));
+   console.log(data_array);
+   res.end(JSON.stringify(data_array));
 })
 
-app.get('/delete_data', function (req, res) {
+app.get('/votes', function (req, res) {
+  var name = req.query.name;
+  var data = readData(name);
+  var data_array = data
+  console.log(data); 
+   // Prepare output in JSON format
+   response = data_array;
+   res.header("Access-Control-Allow-Origin", "*"); 
+   //res.header("Access-Control-Allow-Origin: editor.swagger.io", "*");
+   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+   console.log(data_array);
+   res.end(JSON.stringify(data_array));
+})
+
+
+
+
+app.delete('/votes/:id', function (req, res) {
   console.log("delete_data");
   deleteData(); 
   var response = "Data deleted";
-  res.header("Access-Control-Allow-Origin", "*"); 
+  res.header("Access-Control-Allow-Origin", "*");
+  //res.header("Access-Control-Allow-Origin: editor.swagger.io", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.end(response);
+})
+
+app.delete('/votes', function (req, res) {
+  console.log("delete_data");
+  deleteData(); 
+  var response = "Data deleted";
+  res.header("Access-Control-Allow-Origin", "*");
+  //res.header("Access-Control-Allow-Origin: editor.swagger.io", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   res.end(response);
 })
 
  
-   app.get('*', function(req, res) {
-       res.sendFile('/app/index.html', {root: __dirname}); // load the single view file (angular will handle the page changes on the front-end)
-   });
+app.get('*', function(req, res) {
+  res.sendFile('/app/index.html', {root: __dirname}); // load the single view file (angular will handle the page changes on the front-end)
+});
 
 var server = app.listen(process.env.PORT || 3000, function () {
-   var host = server.address().address
-   var port = server.address().port
-   console.log("Example app listening at http://%s:%s", host, port)
-
+   var host = server.address().address;
+   var port = server.address().port;
+   console.log("Example app listening at http://%s:%s", host, port);
 })

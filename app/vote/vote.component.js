@@ -27,9 +27,9 @@ controller: ['$routeParams', '$localStorage', '$http',  function VoteController(
    //this.createData(foo.name, 58);
 
    
-   $http.get('get_data').then(function(response) {
-        console.log(JSON.stringify(response.data.data));
-        self.persons = response.data.data; 
+   $http.get('votes').then(function(response) {
+        console.log(JSON.stringify(response));
+        self.persons = response.data; 
         self.total = 0; 
         var i; 
         for (i=0; i < self.persons.length; i++) {
