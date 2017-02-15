@@ -2,7 +2,6 @@
 # Be aware that YAML has indentation based scoping.
 # Code completion support is available so start typing for available options.
 swagger: '2.0'
-
 # This is your document metadata
 info:
   version: "0.0.1"
@@ -89,4 +88,3 @@ definitions:
         format: int32
       message:
         type: string
-
