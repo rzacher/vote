@@ -49,13 +49,23 @@ function createData(name, value) {
   storage.setItemSync("lastId", id);
 }
 
-function readData(name) {
-   var data = storage.getItemSync("data");
-   if (name === undefined) {
-      return data; 
-   } else {
-      return data; // Find the data for name here
-   }
+function readData(id) {
+   var p = new Promise(function(resolve, reject) {
+      var data = storage.getItemSync("data");
+      if (id === undefined) {
+          resolve(data); 
+      } else {
+          data.forEach(function(entry) {
+            //console.log("entry: " + entry.id + " id: " + id); 
+            if (entry.id === parseInt(id)) {
+              console.log("id match: " + id + " entry: " + JSON.stringify(entry)); 
+              return resolve(entry); 
+            } 
+          });
+      }
+      reject("No vote found for id"); 
+   });
+   return p; 
 }
 
 
@@ -96,23 +106,31 @@ app.post('/save_data', function (req, res) {
 })
 
 app.get('/votes/:id', function (req, res) {
+  var id = req.params.id;
+  console.log("id: " + id);
 	var name = req.query.name;
-	var data = readData(name);
-  var data_array = data
-	console.log(data); 
+	readData(id).then(function(data) {
+    console.log("return from readData: " + data); 
    // Prepare output in JSON format
-   response = data_array;
+   response = data;
    res.header("Access-Control-Allow-Origin", "*"); 
    //res.header("Access-Control-Allow-Origin: editor.swagger.io", "*");
    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
-   console.log(data_array);
-   res.end(JSON.stringify(data_array));
+   console.log(data);
+   res.end(JSON.stringify(data));
+     
+  }).catch(function() {
+     /* error */
+     console.log("erorr in votes/id"); 
+  });
+
+  
 })
 
 app.get('/votes', function (req, res) {
   var name = req.query.name;
-  var data = readData(name);
+  var data = readData();
   var data_array = data
   console.log(data); 
    // Prepare output in JSON format
