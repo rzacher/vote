@@ -130,17 +130,21 @@ app.get('/votes/:id', function (req, res) {
 
 app.get('/votes', function (req, res) {
   var name = req.query.name;
-  var data = readData();
-  var data_array = data
-  console.log(data); 
-   // Prepare output in JSON format
-   response = data_array;
-   res.header("Access-Control-Allow-Origin", "*"); 
-   //res.header("Access-Control-Allow-Origin: editor.swagger.io", "*");
-   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  readData().then(function(data) {
+    var data_array = data
+    console.log(data); 
+     // Prepare output in JSON format
+     response = data_array;
+     res.header("Access-Control-Allow-Origin", "*"); 
+     //res.header("Access-Control-Allow-Origin: editor.swagger.io", "*");
+     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
-   console.log(data_array);
-   res.end(JSON.stringify(data_array));
+     console.log(data_array);
+     res.end(JSON.stringify(data_array));
+   }).catch(function() {
+     /* error */
+     console.log("erorr in votes"); 
+  });
 })
 
 
