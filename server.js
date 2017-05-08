@@ -1,16 +1,41 @@
-console.log('starting persist');
-
+console.log('starting vote app');
+// Old
 var storage = require('node-persist');
-var express = require('express');
-var bodyParser = require('body-parser');
+//var express = require('express');
+//var bodyParser = require('body-parser');
 var methodOverride = require('method-override'); // simulate DELETE and PUT (express4)
 var _ = require('underscore');
-var app = express();
-app.use(express.static(__dirname + "/app"));
-app.use(bodyParser.json());
-app.use(methodOverride());
+//var app = express();
+//app.use(express.static(__dirname + "/app"));
+//app.use(bodyParser.json());
+//app.use(methodOverride());
 
 storage.initSync(); 
+
+// new
+var express = require('express');
+var bodyParser = require('body-parser');
+var _ = require('underscore'); 
+var db = require('./db.js');
+var bcrypt = require('bcrypt');
+var middleware = require('./middleware.js')(db);
+
+var app = express();
+app.use(express.static(__dirname + "/app"));
+//app.use(bodyParser.json());
+app.use(methodOverride());
+var PORT = process.env.PORT || 3000;
+
+var todos = [];
+var todoNextId = 1;
+
+app.use(bodyParser.json());
+
+// Get /
+app.get('/', function(req, res) {
+ 
+  res.send('vote API root'); 
+});
 
 // Generic error handler used by all endpoints.
 function handleError(res, reason, message, code) {
@@ -175,8 +200,64 @@ app.get('*', function(req, res) {
   res.sendFile('/app/index.html', {root: __dirname}); // load the single view file (angular will handle the page changes on the front-end)
 });
 
-var server = app.listen(process.env.PORT || 3000, function () {
-   var host = server.address().address;
-   var port = server.address().port;
-   console.log("Example app listening at http://%s:%s", host, port);
-})
+// var server = app.listen(process.env.PORT || 3000, function () {
+//    var host = server.address().address;
+//    var port = server.address().port;
+//    console.log("Example app listening at http://%s:%s", host, port);
+// })
+
+
+// POST /todos
+app.post('/users', function(req, res) {
+  console.log('post users');
+  // use _.pick to only pick description and completed. 
+  var body = _.pick(req.body, 'email', 'password');
+  console.log(body);  
+
+    db.user.create(body).then(function (user) {
+               res.json(user.toPublicJSON());
+            }, function (e) {
+              res.status(400).json(e);
+              console.log(e); 
+            });
+});
+
+// POST /users/login
+app.post('/users/login', function(req, res) {
+  var where = {};
+  console.log('post /users/login');
+  // use _.pick to only pick description and completed. 
+  var body = _.pick(req.body, 'email', 'password');
+    var userInstance; 
+
+    db.user.authenticate(body).then(function (user) {
+    console.log(user.toPublicJSON());
+    var token = user.generateToken('authentication');
+    userInstance = user; 
+
+    return db.token.create({
+        token: token
+    });
+  }).then(function(tokenInstance) {
+     console.log("token:");
+     console.log(tokenInstance.get('token'));
+       res.header('Auth', tokenInstance.get('token')).json(userInstance.toPublicJSON());
+  }).catch(function() {
+      res.status(401).send(); 
+  });
+});
+
+//DELETE /users/login
+app.delete('/users/login', middleware.requireAuthentication,  function (req,res) {
+   req.token.destroy().then(function () {
+     res.status(204).send(); 
+   }).catch(function() {
+      res.status(500).send(); 
+   }); 
+}); 
+
+db.sequelize.sync({force:true}).then(function() {
+  app.listen(PORT, function(){
+    console.log('Express listening on port ' + PORT + '!');
+  });
+});
