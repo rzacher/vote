@@ -9,7 +9,7 @@ component('voteform', {
        	var self = this; 
        	self.save = function reset() {
           $log.debug("client rest call on save_data");
-          var url = 'save_data';
+          var url = 'votes';
           $log.debug(url); 
           var dataObj = {
             name: self.name,
@@ -39,7 +39,7 @@ component('voteform', {
 
 
           var res = $http({
-            url: 'save_data',
+            url: 'votes',
             dataType: 'json',
             method: 'POST',
             data: postObject,

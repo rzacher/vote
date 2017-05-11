@@ -9,7 +9,7 @@ if (env === 'production') {
 } else {
 	sequelize = new Sequelize(undefined, undefined, undefined, {
 		'dialect':'sqlite',
-        'storage': __dirname + '/data/dev-todo-api.sqlite'
+        'storage': __dirname + '/data/dev-vote-api.sqlite'
     });
 }
 
@@ -19,12 +19,13 @@ var db = {};
 db.todo = sequelize.import(__dirname + '/models/todo.js'); 
 db.user = sequelize.import(__dirname + '/models/user.js'); 
 db.token = sequelize.import(__dirname + '/models/token.js'); 
+db.vote = sequelize.import(__dirname + '/models/vote.js');
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize; 
 
-db.todo.belongsTo(db.user);
-db.user.hasMany(db.todo);
+db.vote.belongsTo(db.user);
+db.user.hasMany(db.vote);
 
 module.exports = db; 
 

@@ -26,8 +26,8 @@ app.use(express.static(__dirname + "/app"));
 app.use(methodOverride());
 var PORT = process.env.PORT || 3000;
 
-var todos = [];
-var todoNextId = 1;
+var votes = [];
+var voteNextId = 1;
 
 app.use(bodyParser.json());
 
@@ -52,6 +52,7 @@ app.get('/', function (req, res) {
    res.send('persist app');
 })
 
+/*
 function createData(name, value) {
   var data = storage.getItemSync("data");
   console.log(data);
@@ -146,7 +147,7 @@ app.get('/votes/:id', function (req, res) {
    res.end(JSON.stringify(data));
      
   }).catch(function() {
-     /* error */
+    //  error
      console.log("erorr in votes/id"); 
   });
 
@@ -167,7 +168,7 @@ app.get('/votes', function (req, res) {
      console.log(data_array);
      res.end(JSON.stringify(data_array));
    }).catch(function() {
-     /* error */
+     // error 
      console.log("erorr in votes"); 
   });
 })
@@ -194,6 +195,146 @@ app.delete('/votes', function (req, res) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   res.end(response);
 })
+*/
+// New stuff based on todo-api
+// GET /votes?completed = true&q=house
+//app.get('/votes', middleware.requireAuthentication, function (req, res) {
+app.get('/votes', middleware.requireAuthentication,  function (req, res) {
+  var query = req.query; 
+  var where = {
+    userId: req.user.get('id')
+  };
+
+  if (query.hasOwnProperty('name') && query.name !== undefined) {
+    where.name = name;
+  } 
+
+    // if (query.hasOwnProperty('q') && query.q.length > 0) {
+    //   where.description = {
+    //       $like: '%' + query.q + '%'
+    //     };
+    // }
+
+  db.vote.findAll({where: where}).then(function (votes) {
+           res.header("Access-Control-Allow-Origin", "*"); 
+           res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+           res.json(votes);
+       }, function (e) {
+         res.status(500).send(); 
+     });
+});
+// GET /votes/:id
+//app.get('/votes/:id', middleware.requireAuthentication, function (req, res) {
+app.get('/votes/:id', middleware.requireAuthentication, function (req, res) {
+  var voteId = parseInt(req.params.id, 10);
+  var where = {
+    userId: req.user.get('id'),
+    id: voteId
+  };
+
+   db.vote.findOne({where: where}).then(function (vote) {
+     if (!!vote) {
+           res.header("Access-Control-Allow-Origin", "*"); 
+           res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+           res.json(vote.toJSON());
+         } else {
+          res.status(404).send(); 
+         }
+       }, function (e) {
+         res.status(500).json(e).send();
+         console.log(e); 
+     });
+
+});
+
+// POST /votes
+//app.post('/votes', middleware.requireAuthentication, function(req, res) {
+app.post('/votes', middleware.requireAuthentication,  function(req, res) {
+
+  console.log('start votes');
+  // use _.pick to only pick description and completed. 
+  var body = _.pick(req.body, 'name', 'value');
+  console.log("in app.post");
+  console.log(body);  
+  res.header("Access-Control-Allow-Origin", "*"); 
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+    db.vote.create(body).then(function (vote) {
+               req.user.addVote(vote).then( function() {
+                 return vote.reload();
+               }).then(function(vote){
+                 res.json(vote.toJSON());
+               })
+            }, function (e) {
+              res.status(400).json(e);
+              console.log(e); 
+            });
+});
+
+// DELETE /votes/:id
+//app.delete('/votes/:id', middleware.requireAuthentication, function (req, res) {
+app.delete('/votes/:id', function (req, res) {
+  var voteId = parseInt(req.params.id, 10);
+  res.header("Access-Control-Allow-Origin", "*"); 
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  
+  db.vote.destroy({
+    where: {
+      userId: req.user.get('id'),
+      id:voteId
+    }
+  }).then(function (rowsDeleted) {
+    if (rowsDeleted === 0) {
+      res.status(404).json({
+        error: 'No vote with id'
+      });
+    } else {
+      res.status(204).send(); 
+    }
+  }, function (e) {
+    res.status(500).send();
+  }); 
+});
+
+// PUT  /votes/:id
+//app.put('/votes/:id', middleware.requireAuthentication, function(req, res) {
+app.put('/votes/:id', function(req, res) {
+  console.log("entering put"); 
+  var voteId = parseInt(req.params.id, 10);
+  body = _.pick(req.body, 'name', 'value');
+  var attributes = {}; 
+
+  console.log("input: " + req.body.name + ", " + req.body.value); 
+  res.header("Access-Control-Allow-Origin", "*"); 
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+  if (body.hasOwnProperty('name')) {
+    attributes.name = body.name; 
+  } 
+
+  if (body.hasOwnProperty('value')) {
+    attributes.value = body.value; 
+  } 
+ 
+    db.vote.findOne({
+      where: {
+        userId: req.user.get('id'),
+      id:voteId
+      }
+    }).then(function(vote) {
+      if (vote) {
+          vote.update(attributes).then(function(vote) {
+            res.json(vote.toJSON());
+          }, function(e) {
+          res.status(400).json(e);;
+          });
+      } else {
+        res.status(404).send();
+      }
+    }, function() {
+       res.status(500).send();
+    });
+});
 
  
 app.get('*', function(req, res) {
@@ -207,7 +348,7 @@ app.get('*', function(req, res) {
 // })
 
 
-// POST /todos
+// POST /votes
 app.post('/users', function(req, res) {
   console.log('post users');
   // use _.pick to only pick description and completed. 
