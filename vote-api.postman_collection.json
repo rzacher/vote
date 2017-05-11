@@ -1,0 +1,231 @@
+{
+	"variables": [],
+	"info": {
+		"name": "vote-api",
+		"_postman_id": "c6513906-2374-58ab-7f9e-dd5e548a6be4",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "vote-server-save-data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var schema = {",
+							"    \"type\": \"object\",",
+							"    \"additionalProperties\": false,",
+							"    \"required\": [ \"version\" ],",
+							"    \"properties\": {",
+							"        \"version\": { \"type\": \"string\" },",
+							"    }",
+							"};",
+							"if (responseBody.length) {",
+							"    var jsonData = JSON.parse(responseBody);",
+							"    tests[\"Validate body\"] = tv4.validate(jsonData, schema);",
+							"    if (tv4.error !== null)",
+							"        console.log(tv4.error);",
+							"}",
+							""
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"// Set the date to the current time",
+							"postman.setEnvironmentVariable('__date', new Date().toUTCString());",
+							"// Get the interesting part of the URL",
+							"var suburl = request.url.substring(request.url.search(\"/back\")).",
+							"             replace(\"{{applianceId}}\", environment.applianceId).",
+							"             replace(\"{{cloudspaceUuid}}\", environment.cloudspaceUuid).",
+							"             toLowerCase();",
+							"",
+							"var bodyString = request.data;",
+							"var bodyLengthStr = \"\";",
+							"var secretKey;",
+							"if (request.headers.Authorization.search(\"CloudApi\") >=0 ) {",
+							"    bodyLengthStr = \"\\n\";",
+							"    secretKey = environment.userSecretKey;",
+							"    if (bodyString.length) {",
+							"        bodyString = bodyString.replace(\"{{cloudspaceUuid}}\", environment.cloudspaceUuid);",
+							"        bodyLengthStr = bodyString.length + \"\\n\";",
+							"    }",
+							"} else if (request.headers.Authorization.search(\"CloudApplication\") >= 0) {",
+							"    bodyLengthStr = \"\";",
+							"    secretKey = environment.applicationSecretKey;",
+							"} else {",
+							"    console.log(\"unrecognized authorization type\");",
+							"}",
+							"",
+							"var contentTypeStr = \"\\n\";",
+							"if (request.headers['Content-Type'] !== undefined) {",
+							"    contentTypeStr = request.headers['Content-Type'] + \"\\n\";",
+							"}",
+							"",
+							"// Generate the header string to sign",
+							"var headerString = request.method + \"\\n\" + ",
+							"                    bodyLengthStr +",
+							"                    contentTypeStr +",
+							"                    environment.__date + \"\\n\" +",
+							"// Add tmrk headers in this section in alphabetic order",
+							"                    \"x-tmrk-date:\" + environment.__date + \"\\n\" + ",
+							"                    \"x-tmrk-version:\" + environment.apiVersion + \"\\n\" + ",
+							"                    suburl + \"\\n\";",
+							"",
+							"postman.setEnvironmentVariable('test', headerString);",
+							"var hash = CryptoJS.HmacSHA256(headerString, secretKey);",
+							"postman.setEnvironmentVariable('__signature', hash.toString(CryptoJS.enc.Base64));",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8081/save_data",
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-tmrk-version",
+						"value": "{{apiVersion}}",
+						"description": ""
+					},
+					{
+						"key": "x-tmrk-date",
+						"value": "{{__date}}",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "CloudApplication AccessKey=\"{{applicationAccessKey}}\" SignatureType=\"HmacSha256\" Signature=\"{{__signature}}\"",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"Ilana\", \"value\":\"20\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POST /users",
+			"request": {
+				"url": "{{apiUrl}}/users",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"bzacher1@gmail.com\",\n\t\"password\": \"abcdefgh\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POST /users/login",
+			"request": {
+				"url": "{{apiUrl}}/users/login",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"bzacher1@gmail.com\",\n\t\"password\": \"abcdefgh\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /users/login",
+			"request": {
+				"url": "{{apiUrl}}/users/login?Auth={{authToken}}",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Auth",
+						"value": "{{authToken}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"bzacher1@gmail.com\",\n\t\"password\": \"abcdefgh\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POST /votes",
+			"request": {
+				"url": "{{apiUrl}}/todos",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Auth",
+						"value": "{{authToken}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"description\": \"go skiing\",\n  \"completed\": false\n}"
+				},
+				"description": "POST /todos"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /votes",
+			"request": {
+				"url": "{{apiUrl}}/todos",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Auth",
+						"value": "{{authToken}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
