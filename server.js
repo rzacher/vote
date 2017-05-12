@@ -205,9 +205,9 @@ app.get('/votes', middleware.requireAuthentication,  function (req, res) {
     userId: req.user.get('id')
   };
 
-  if (query.hasOwnProperty('name') && query.name !== undefined) {
-    where.name = name;
-  } 
+  // if (query.hasOwnProperty('name') && query.name !== undefined) {
+  //   where.name = name;
+  // } 
 
     // if (query.hasOwnProperty('q') && query.q.length > 0) {
     //   where.description = {
@@ -273,7 +273,7 @@ app.post('/votes', middleware.requireAuthentication,  function(req, res) {
 
 // DELETE /votes/:id
 //app.delete('/votes/:id', middleware.requireAuthentication, function (req, res) {
-app.delete('/votes/:id', function (req, res) {
+app.delete('/votes/:id', middleware.requireAuthentication, function (req, res) {
   var voteId = parseInt(req.params.id, 10);
   res.header("Access-Control-Allow-Origin", "*"); 
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -298,7 +298,7 @@ app.delete('/votes/:id', function (req, res) {
 
 // PUT  /votes/:id
 //app.put('/votes/:id', middleware.requireAuthentication, function(req, res) {
-app.put('/votes/:id', function(req, res) {
+app.put('/votes/:id',  middleware.requireAuthentication, function(req, res) {
   console.log("entering put"); 
   var voteId = parseInt(req.params.id, 10);
   body = _.pick(req.body, 'name', 'value');
@@ -397,7 +397,8 @@ app.delete('/users/login', middleware.requireAuthentication,  function (req,res)
    }); 
 }); 
 
-db.sequelize.sync({force:true}).then(function() {
+//db.sequelize.sync({force:true}).then(function() {
+db.sequelize.sync().then(function() { 
   app.listen(PORT, function(){
     console.log('Express listening on port ' + PORT + '!');
   });

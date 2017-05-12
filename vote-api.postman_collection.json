@@ -213,7 +213,7 @@
 		{
 			"name": "GET /votes",
 			"request": {
-				"url": "{{apiUrl}}/todos",
+				"url": "{{apiUrl}}/votes",
 				"method": "GET",
 				"header": [
 					{
@@ -224,6 +224,48 @@
 				],
 				"body": {},
 				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /votes/id",
+			"request": {
+				"url": "{{apiUrl}}/votes/1",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Auth",
+						"value": "{{authToken}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "PUT votes",
+			"request": {
+				"url": "{{apiUrl}}/votes/1",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Auth",
+						"value": "{{authToken}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"sam\",\n  \"value\": 33\n}"
+				},
+				"description": "PUT /todos"
 			},
 			"response": []
 		}
