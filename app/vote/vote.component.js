@@ -26,8 +26,20 @@ controller: ['$routeParams', '$localStorage', '$http',  function VoteController(
 
    //this.createData(foo.name, 58);
 
-   
-   $http.get('votes').then(function(response) {
+ 
+
+    var token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IlUyRnNkR1ZrWDEvTnBLZFZXc3RlbWRpRVFjS2kvb0FVcE9WbldDc2syR0xaQ3M5cW1KTWFsZkRkTEVBNVNsaStwdHUzYlBvOUk1ZzV5N3ZDVzhNMWhRPT0iLCJpYXQiOjE0OTQ2MDAyNjF9._cX8t7__Gl2jhVQn_0pFFEnEe0N3b3hc6YjZnELFm5Y';
+    var res = $http({
+            url: 'votes',
+            dataType: 'json',
+            method: 'GET',
+            headers: {
+                "Content-Type": "application/json",
+                "Auth": token
+            }
+    });
+
+    res.then(function(response) {
         console.log(JSON.stringify(response));
         self.persons = response.data; 
         self.total = 0; 

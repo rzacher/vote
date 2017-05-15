@@ -28,8 +28,17 @@ controller: ['$routeParams', '$localStorage', '$http',  function AdminController
    //       };
 
    ///log.debug(self.password); 
-   
-   $http.get('votes').then(function(response) {
+  var token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IlUyRnNkR1ZrWDEvTnBLZFZXc3RlbWRpRVFjS2kvb0FVcE9WbldDc2syR0xaQ3M5cW1KTWFsZkRkTEVBNVNsaStwdHUzYlBvOUk1ZzV5N3ZDVzhNMWhRPT0iLCJpYXQiOjE0OTQ2MDAyNjF9._cX8t7__Gl2jhVQn_0pFFEnEe0N3b3hc6YjZnELFm5Y';
+   var res1 = $http({
+            url: 'votes',
+            dataType: 'json',
+            method: 'GET',
+            headers: {
+                "Content-Type": "application/json",
+                "Auth": token
+            }
+      });
+   res1.then(function(response) {
         console.log(JSON.stringify(response.data.data));
         self.persons = response.data; 
         self.total = 0; 
@@ -82,8 +91,19 @@ controller: ['$routeParams', '$localStorage', '$http',  function AdminController
    self.reset = function reset() {
       console.log("reset called");
       console.log(self.password);
-      var url = "votes";
-      $http.delete(url).then(function(response) {
+
+     
+      var res = $http({
+            url: 'votes',
+            dataType: 'json',
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/json",
+                "Auth": token
+            }
+      });
+
+      res.then(function(response) {
                //log.debug(response.data);
               
                self.average = 0;
