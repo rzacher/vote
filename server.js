@@ -296,6 +296,33 @@ app.delete('/votes/:id', middleware.requireAuthentication, function (req, res) {
   }); 
 });
 
+// DELETE /votes
+//app.delete('/votes/, middleware.requireAuthentication, function (req, res) {
+app.delete('/votes', middleware.requireAuthentication, function (req, res) {
+  res.header("Access-Control-Allow-Origin", "*"); 
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  
+  var body = _.pick(req.body, 'password');
+  console.log("in votes delete: pw:" + body.password);
+  
+  db.vote.destroy({
+    where: {
+      userId: req.user.get('id'),
+    }
+  }).then(function (rowsDeleted) {
+    if (rowsDeleted === 0) {
+      res.status(404).json({
+        error: 'No vote with id'
+      });
+    } else {
+      res.status(204).send(); 
+    }
+  }, function (e) {
+    res.status(500).send();
+  }); 
+});
+
+
 // PUT  /votes/:id
 //app.put('/votes/:id', middleware.requireAuthentication, function(req, res) {
 app.put('/votes/:id',  middleware.requireAuthentication, function(req, res) {

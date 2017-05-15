@@ -92,11 +92,15 @@ controller: ['$routeParams', '$localStorage', '$http',  function AdminController
       console.log("reset called");
       console.log(self.password);
 
+      var postObject = new Object();
+      postObject.password = self.password;
+
      
       var res = $http({
             url: 'votes',
             dataType: 'json',
             method: 'DELETE',
+            data: postObject,
             headers: {
                 "Content-Type": "application/json",
                 "Auth": token
