@@ -37,7 +37,10 @@ component('voteform', {
         //     $log.debug(error);
         // });
 
-          var token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IlUyRnNkR1ZrWDEvTnBLZFZXc3RlbWRpRVFjS2kvb0FVcE9WbldDc2syR0xaQ3M5cW1KTWFsZkRkTEVBNVNsaStwdHUzYlBvOUk1ZzV5N3ZDVzhNMWhRPT0iLCJpYXQiOjE0OTQ2MDAyNjF9._cX8t7__Gl2jhVQn_0pFFEnEe0N3b3hc6YjZnELFm5Y';
+          //var token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IlUyRnNkR1ZrWDEvTnBLZFZXc3RlbWRpRVFjS2kvb0FVcE9WbldDc2syR0xaQ3M5cW1KTWFsZkRkTEVBNVNsaStwdHUzYlBvOUk1ZzV5N3ZDVzhNMWhRPT0iLCJpYXQiOjE0OTQ2MDAyNjF9._cX8t7__Gl2jhVQn_0pFFEnEe0N3b3hc6YjZnELFm5Y';
+          
+          var token = $window.sessionStorage.token;
+          alert(token); 
           var res = $http({
             url: 'votes',
             dataType: 'json',

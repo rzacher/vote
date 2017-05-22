@@ -14,6 +14,9 @@ angular.
         when('/admin', {
           template: '<admin></admin>'
         }).
-        otherwise('/voteform');
+        when('/login', {
+          template: '<login></login>'
+        }).
+        otherwise('/login');
     }
   ]);

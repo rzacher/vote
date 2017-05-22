@@ -1,4 +1,4 @@
 'use strict';
 
 
-angular.module('personApp', ['ngRoute', 'vote', 'voteform', 'admin']);
+angular.module('personApp', ['ngRoute', 'vote', 'voteform', 'admin', 'login']);

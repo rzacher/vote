@@ -409,7 +409,12 @@ app.post('/users/login', function(req, res) {
   }).then(function(tokenInstance) {
      console.log("token:");
      console.log(tokenInstance.get('token'));
-       res.header('Auth', tokenInstance.get('token')).json(userInstance.toPublicJSON());
+     var token = tokenInstance.get('token');
+     res.header("Access-Control-Allow-Origin", "*"); 
+     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+     res.header('Auth', tokenInstance.get('token')).json(userInstance.toPublicJSON());
+     //res.header("Auth", token); 
+     //res.header('Auth', tokenInstance.get('token'));
   }).catch(function() {
       res.status(401).send(); 
   });
